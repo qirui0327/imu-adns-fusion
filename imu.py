@@ -9,7 +9,7 @@ class IMUData:
 
 def read_imu_data(file_path):
     imu_data_list = []
-    df = pd.read_csv('data__1.csv', encoding='utf-8', sep=',', skipinitialspace=True, index_col=False)
+    df = pd.read_csv('imu.csv', encoding='utf-8', sep=',', skipinitialspace=True, index_col=False)
     for _, row in df.iterrows():
         time = datetime.strptime(row['Time'], '%H:%M:%S.%f')
         # 将加速度从g转换为cm/s²，其他代码保持不变

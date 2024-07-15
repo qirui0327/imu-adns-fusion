@@ -27,9 +27,9 @@ class IMUData:
         self.angle_velocity = angle_velocity
         self.time = time
 
-def read_imu_data(file_path):
+def read_imu_data():
     imu_data_list = []
-    df = pd.read_csv('data__1.csv', encoding='utf-8', sep=',', skipinitialspace=True, index_col=False)
+    df = pd.read_csv('imu.csv', encoding='utf-8', sep=',', skipinitialspace=True, index_col=False)
     for _, row in df.iterrows():
         time = datetime.strptime(row['Time'], '%H:%M:%S.%f')
         linear_accel = [row['AccelX_g'], row['AccelY_g'], row['AccelZ_g']]
@@ -43,7 +43,7 @@ class ADNSData:
         self.local_position_ned = np.array(local_position_ned) * 0.0254 / cpi
         self.time = time
 
-def read_adns_data(file_path, cpi):
+def read_adns_data( cpi):
     adns_data_list = []
     df = pd.read_csv('adns.csv', encoding='utf-8', sep=',', skipinitialspace=True, index_col=False)
     for _, row in df.iterrows():
@@ -215,8 +215,8 @@ config_parameters.gyro_noise_std_ = 0.005  # 减小陀螺仪噪声标准差
 eskf = ErrorStateKalmanFilter(config_parameters)
 
 # 读取IMU和ADNS数据
-imu_data_list = read_imu_data('/mnt/data/imu_data.csv')
-adns_data_list = read_adns_data('/mnt/data/adns_data.csv', 8200)
+imu_data_list = read_imu_data()
+adns_data_list = read_adns_data( 8200)
 
 # 确认数据类型和内容
 print(f"Type of first ADNSData object: {type(adns_data_list[0])}")
