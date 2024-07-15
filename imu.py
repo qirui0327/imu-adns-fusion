@@ -7,13 +7,11 @@ class IMUData:
         self.angle_velocity = np.array(angle_velocity)
         self.time = time
 
-def read_imu_data(file_path):
+def read_imu_data():
     imu_data_list = []
     df = pd.read_csv('imu.csv', encoding='utf-8', sep=',', skipinitialspace=True, index_col=False)
     for _, row in df.iterrows():
         time = datetime.strptime(row['Time'], '%H:%M:%S.%f')
-        # 将加速度从g转换为cm/s²，其他代码保持不变
-        # 将加速度从g转换为cm/s²
         linear_accel = [row['AccelX_g'] * 980.665, row['AccelY_g'] * 980.665, row['AccelZ_g'] * 980.665]
 
 
@@ -32,7 +30,7 @@ class SimpleIMUTracker:
 
     def update(self, imu_data, delta_t):
         # 更新速度
-        accel = np.array(imu_data.linear_accel)  # 单位已经是cm/s²
+        accel = np.array(imu_data.linear_accel) 
         self.velocity += accel * delta_t
         # 更新位置
         self.position += self.velocity * delta_t
@@ -62,7 +60,7 @@ def plot_trajectory(positions):
     plt.show()
 
 # 读取IMU数据
-imu_data_list = read_imu_data('/mnt/data/imu_data.csv')
+imu_data_list = read_imu_data()
 
 # 计算轨迹
 positions = compute_trajectory(imu_data_list)
